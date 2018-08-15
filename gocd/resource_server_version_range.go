@@ -30,6 +30,7 @@ func (svr *ServerVersionRange) Contains(version *ServerVersion) bool {
 	equality := version.Equal(svr.max)
 	return lowerBound && upperBound || equality
 }
+
 func (svr *ServerVersionRange) String() string {
 	return fmt.Sprintf("(%s, %s]", svr.min.String(), svr.max.String())
 }
