@@ -7,13 +7,16 @@ import (
 )
 
 var serverVersionLookup *serverVersionCollection
+
 type ServerVersionString string
 
 const (
-	SERVER_VERSION_16_6_0 = ServerVersionString("16.6.0")
-	SERVER_VERSION_17_4_0 = ServerVersionString("17.4.0")
+	SERVER_VERSION_14_3_0  = ServerVersionString("14.3.0")
+	SERVER_VERSION_16_6_0  = ServerVersionString("16.6.0")
+	SERVER_VERSION_17_4_0  = ServerVersionString("17.4.0")
 	SERVER_VERSION_17_12_0 = ServerVersionString("17.12.0")
-	SERVER_VERSION_18_7_0 = ServerVersionString("18.7.0")
+	SERVER_VERSION_18_2_0  = ServerVersionString("18.2.0")
+	SERVER_VERSION_18_7_0  = ServerVersionString("18.7.0")
 )
 
 func init() {
@@ -30,14 +33,14 @@ func init() {
 				newServerAPI("16.7.0", apiV2),
 				newServerAPI("15.3.0", apiV1)),
 			"/api/pipelines/:pipeline_name/pause": newVersionCollection(
-				newServerAPI("14.3.0", apiV0),
-				newServerAPI("18.2.0", apiV1)),
+				newServerAPI(SERVER_VERSION_14_3_0, apiV0),
+				newServerAPI(SERVER_VERSION_18_2_0, apiV1)),
 			"/api/pipelines/:pipeline_name/unpause": newVersionCollection(
-				newServerAPI("14.3.0", apiV0),
-				newServerAPI("18.2.0", apiV1)),
+				newServerAPI(SERVER_VERSION_14_3_0, apiV0),
+				newServerAPI(SERVER_VERSION_18_2_0, apiV1)),
 			"/api/pipelines/:pipeline_name/releaseLock": newVersionCollection(
-				newServerAPI("14.3.0", apiV0),
-				newServerAPI("18.2.0", apiV1)),
+				newServerAPI(SERVER_VERSION_14_3_0, apiV0),
+				newServerAPI(SERVER_VERSION_18_2_0, apiV1)),
 			"/api/admin/plugin_info": newVersionCollection(
 				newServerAPI("16.7.0", apiV1),
 				newServerAPI("16.12.0", apiV2),
