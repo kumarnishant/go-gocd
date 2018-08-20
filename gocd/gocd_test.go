@@ -89,13 +89,12 @@ func skipIntegrationtest(t *testing.T) {
 	t.Skip("'GOCD_ACC=1' must be set to run integration tests")
 }
 
-func runOnlyForServerVersionRange(t *testing.T, min ServerVersionString, max ServerVersionString) bool {
+func runOnlyForServerVersionRange(t *testing.T, versionRange *ServerVersionRange) bool {
 	run := isIntegrationTest()
 	if !run {
 		t.Skip("could not run test as integration tests are not enabled")
 	}
 
-	versionRange := newServerVersionRangeFromString(min, max)
 	version, _, err := intClient.ServerVersion.Get(context.Background())
 	if err != nil {
 		t.Error(err)
