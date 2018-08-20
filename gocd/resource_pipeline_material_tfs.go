@@ -12,10 +12,10 @@ func (mtfs MaterialAttributesTfs) equal(mtfs2i MaterialAttribute) (bool, error) 
 	}
 
 	return mtfs.Name == mtfs2.Name &&
-		mtfs.URL == mtfs2.URL &&
-		mtfs.ProjectPath == mtfs2.ProjectPath &&
-		mtfs.Domain == mtfs2.Domain &&
-		mtfs.Destination == mtfs2.Destination,
+			mtfs.URL == mtfs2.URL &&
+			mtfs.ProjectPath == mtfs2.ProjectPath &&
+			mtfs.Domain == mtfs2.Domain &&
+			mtfs.Destination == mtfs2.Destination,
 		nil
 }
 
