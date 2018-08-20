@@ -90,9 +90,8 @@ func skipIntegrationtest(t *testing.T) {
 }
 
 func runOnlyForServerVersionRange(t *testing.T, versionRange *ServerVersionRange) bool {
-	run := isIntegrationTest()
-	if !run {
-		t.Skip("could not run test as integration tests are not enabled")
+	if run := runIntegrationTest(t); !run {
+		return run
 	}
 
 	version, _, err := intClient.ServerVersion.Get(context.Background())
