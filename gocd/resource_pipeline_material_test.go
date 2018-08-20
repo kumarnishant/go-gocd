@@ -238,7 +238,9 @@ func testMaterialUnmarshallAttributes(t *testing.T) {
 	t.Run("P4", testUnmarshallMaterialAttributesP4)
 	t.Run("P4Generic", testGenerateGenericP4Dependency)
 	t.Run("Package", testUnmarshallMaterialAttributesPkg)
+	t.Run("PackageGeneric", testGenerateGenericPackageDependency)
 	t.Run("Plugin", testUnmarshallMaterialAttributesPlugin)
+	t.Run("PluginGeneric", testGenerateGenericPluginDependency)
 	t.Run("SVN", testUnmarshallMaterialAttributesSvn)
 	t.Run("TFS", testUnmarshallMaterialAttributesTfs)
 }

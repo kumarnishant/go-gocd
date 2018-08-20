@@ -19,6 +19,50 @@ func (mp4 MaterialAttributesP4) equal(ma MaterialAttribute) (bool, error) {
 // GenerateGeneric form (map[string]interface) of the material filter
 func (mp4 MaterialAttributesP4) GenerateGeneric() (ma map[string]interface{}) {
 	ma = make(map[string]interface{})
+
+	if mp4.Destination != "" {
+		ma["destination"] = mp4.Destination
+	}
+
+	if mp4.Name != "" {
+		ma["name"] = mp4.Name
+	}
+
+	if mp4.Port != "" {
+		ma["port"] = mp4.Port
+	}
+
+	if mp4.UseTickets {
+		ma["use_tickets"] = mp4.UseTickets
+	}
+	if mp4.View != "" {
+		ma["view"] = mp4.View
+	}
+
+	if mp4.Username != "" {
+		ma["username"] = mp4.Username
+	}
+
+	if mp4.Password != "" {
+		ma["password"] = mp4.Password
+	}
+
+	if mp4.EncryptedPassword != "" {
+		ma["encrypted_password"] = mp4.EncryptedPassword
+	}
+
+	if mp4.InvertFilter {
+		ma["invert_filter"] = mp4.InvertFilter
+	}
+
+	if mp4.AutoUpdate {
+		ma["auto_update"] = mp4.AutoUpdate
+	}
+
+	if f := mp4.Filter.GenerateGeneric(); f != nil {
+		ma["filter"] = f
+	}
+
 	return
 }
 
