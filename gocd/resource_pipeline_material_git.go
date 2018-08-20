@@ -24,36 +24,33 @@ func (mag MaterialAttributesGit) equal(a2i MaterialAttribute) (bool, error) {
 // GenerateGeneric form (map[string]interface) of the material filter
 func (mag MaterialAttributesGit) GenerateGeneric() (ma map[string]interface{}) {
 	ma = map[string]interface{}{}
-	if mag.Name != "" {
-		ma["name"] = mag.Name
+
+	for _, pair := range []struct {
+		key   string
+		value string
+	}{
+		{key: "name", value: mag.Name},
+		{key: "url", value: mag.URL},
+		{key: "branch", value: mag.Branch},
+		{key: "submodule_folder", value: mag.SubmoduleFolder},
+		{key: "destination", value: mag.Destination},
+	} {
+		if pair.value != "" {
+			ma[pair.key] = pair.value
+		}
 	}
 
-	if mag.URL != "" {
-		ma["url"] = mag.URL
-	}
-
-	if mag.AutoUpdate {
-		ma["auto_update"] = mag.AutoUpdate
-	}
-
-	if mag.Branch != "" {
-		ma["branch"] = mag.Branch
-	}
-
-	if mag.SubmoduleFolder != "" {
-		ma["submodule_folder"] = mag.SubmoduleFolder
-	}
-
-	if mag.Destination != "" {
-		ma["destination"] = mag.Destination
-	}
-
-	if mag.ShallowClone {
-		ma["shallow_clone"] = mag.ShallowClone
-	}
-
-	if mag.InvertFilter {
-		ma["invert_filter"] = mag.InvertFilter
+	for _, pair := range []struct {
+		key   string
+		value bool
+	}{
+		{key: "auto_update", value: mag.AutoUpdate},
+		{key: "shallow_clone", value: mag.ShallowClone},
+		{key: "invert_filter", value: mag.InvertFilter},
+	} {
+		if pair.value {
+			ma[pair.key] = pair.value
+		}
 	}
 
 	if f := mag.Filter.GenerateGeneric(); f != nil {
