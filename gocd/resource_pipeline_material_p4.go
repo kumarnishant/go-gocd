@@ -24,7 +24,7 @@ func (mp4 MaterialAttributesP4) GenerateGeneric() (ma map[string]interface{}) {
 		key   string
 		value string
 	}{
-		{key: "desintation", value: mp4.Destination},
+		{key: "destination", value: mp4.Destination},
 		{key: "name", value: mp4.Name},
 		{key: "port", value: mp4.Port},
 		{key: "view", value: mp4.View},
