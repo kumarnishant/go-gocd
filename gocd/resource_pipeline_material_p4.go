@@ -18,37 +18,23 @@ func (mp4 MaterialAttributesP4) equal(ma MaterialAttribute) (bool, error) {
 
 // GenerateGeneric form (map[string]interface) of the material filter
 func (mp4 MaterialAttributesP4) GenerateGeneric() (ma map[string]interface{}) {
-	ma = make(map[string]interface{})
-
-	for _, pair := range []struct {
-		key   string
-		value string
-	}{
-		{key: "destination", value: mp4.Destination},
-		{key: "name", value: mp4.Name},
-		{key: "port", value: mp4.Port},
-		{key: "view", value: mp4.View},
-		{key: "username", value: mp4.Username},
-		{key: "password", value: mp4.Password},
-		{key: "encrypted_password", value: mp4.EncryptedPassword},
-	} {
-		if pair.value != "" {
-			ma[pair.key] = pair.value
-		}
-	}
-
-	for _, pair := range []struct {
-		key   string
-		value bool
-	}{
-		{key: "use_tickets", value: mp4.UseTickets},
-		{key: "invert_filter", value: mp4.InvertFilter},
-		{key: "auto_update", value: mp4.AutoUpdate},
-	} {
-		if pair.value {
-			ma[pair.key] = pair.value
-		}
-	}
+	ma = genericStringAssignment(
+		[]genericStringPair{
+			{key: "destination", value: mp4.Destination},
+			{key: "name", value: mp4.Name},
+			{key: "port", value: mp4.Port},
+			{key: "view", value: mp4.View},
+			{key: "username", value: mp4.Username},
+			{key: "password", value: mp4.Password},
+			{key: "encrypted_password", value: mp4.EncryptedPassword},
+		},
+		genericBoolAssignment(
+			[]genericBoolPair{
+				{key: "use_tickets", value: mp4.UseTickets},
+				{key: "invert_filter", value: mp4.InvertFilter},
+				{key: "auto_update", value: mp4.AutoUpdate},
+			},
+			nil))
 
 	if f := mp4.Filter.GenerateGeneric(); f != nil {
 		ma["filter"] = f

@@ -23,35 +23,21 @@ func (mag MaterialAttributesGit) equal(a2i MaterialAttribute) (bool, error) {
 
 // GenerateGeneric form (map[string]interface) of the material filter
 func (mag MaterialAttributesGit) GenerateGeneric() (ma map[string]interface{}) {
-	ma = map[string]interface{}{}
-
-	for _, pair := range []struct {
-		key   string
-		value string
-	}{
-		{key: "name", value: mag.Name},
-		{key: "url", value: mag.URL},
-		{key: "branch", value: mag.Branch},
-		{key: "submodule_folder", value: mag.SubmoduleFolder},
-		{key: "destination", value: mag.Destination},
-	} {
-		if pair.value != "" {
-			ma[pair.key] = pair.value
-		}
-	}
-
-	for _, pair := range []struct {
-		key   string
-		value bool
-	}{
-		{key: "auto_update", value: mag.AutoUpdate},
-		{key: "shallow_clone", value: mag.ShallowClone},
-		{key: "invert_filter", value: mag.InvertFilter},
-	} {
-		if pair.value {
-			ma[pair.key] = pair.value
-		}
-	}
+	ma = genericStringAssignment(
+		[]genericStringPair{
+			{key: "name", value: mag.Name},
+			{key: "url", value: mag.URL},
+			{key: "branch", value: mag.Branch},
+			{key: "submodule_folder", value: mag.SubmoduleFolder},
+			{key: "destination", value: mag.Destination},
+		},
+		genericBoolAssignment(
+			[]genericBoolPair{
+				{key: "auto_update", value: mag.AutoUpdate},
+				{key: "shallow_clone", value: mag.ShallowClone},
+				{key: "invert_filter", value: mag.InvertFilter},
+			},
+			nil))
 
 	if f := mag.Filter.GenerateGeneric(); f != nil {
 		ma["filter"] = f
