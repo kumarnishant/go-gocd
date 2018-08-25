@@ -149,24 +149,25 @@ func testMaterialEquality(t *testing.T) {
 }
 
 func testMaterialAttributeEquality(t *testing.T) {
-	for i, test := range []struct {
-		a MaterialAttribute
-		b MaterialAttribute
+	for _, test := range []struct {
+		name string
+		a    MaterialAttribute
+		b    MaterialAttribute
 	}{
-		{a: MaterialAttributesGit{}, b: MaterialAttributesGit{}},
-		{a: MaterialAttributesGit{Branch: ""}, b: MaterialAttributesGit{Branch: "master"}},
-		{a: MaterialAttributesGit{Branch: "master"}, b: MaterialAttributesGit{Branch: ""}},
-		{a: MaterialAttributesGit{Branch: ""}, b: MaterialAttributesGit{Branch: ""}},
-		{a: MaterialAttributesGit{Branch: "master"}, b: MaterialAttributesGit{Branch: "master"}},
-		{a: MaterialAttributesSvn{}, b: MaterialAttributesSvn{}},
-		{a: MaterialAttributesHg{}, b: MaterialAttributesHg{}},
-		{a: MaterialAttributesP4{}, b: MaterialAttributesP4{}},
-		{a: MaterialAttributesTfs{}, b: MaterialAttributesTfs{}},
-		{a: MaterialAttributesDependency{}, b: MaterialAttributesDependency{}},
-		{a: MaterialAttributesPackage{}, b: MaterialAttributesPackage{}},
-		{a: MaterialAttributesPlugin{}, b: MaterialAttributesPlugin{}},
+		{name: "git-empty", a: MaterialAttributesGit{}, b: MaterialAttributesGit{}},
+		{name: "git-default-left", a: MaterialAttributesGit{Branch: ""}, b: MaterialAttributesGit{Branch: "master"}},
+		{name: "git-default-right", a: MaterialAttributesGit{Branch: "master"}, b: MaterialAttributesGit{Branch: ""}},
+		{name: "git-default-empty", a: MaterialAttributesGit{Branch: ""}, b: MaterialAttributesGit{Branch: ""}},
+		{name: "git-master-branch", a: MaterialAttributesGit{Branch: "master"}, b: MaterialAttributesGit{Branch: "master"}},
+		{name: "svn-empty", a: MaterialAttributesSvn{}, b: MaterialAttributesSvn{}},
+		{name: "hg-empty", a: MaterialAttributesHg{}, b: MaterialAttributesHg{}},
+		{name: "p4-empty", a: MaterialAttributesP4{}, b: MaterialAttributesP4{}},
+		{name: "tfs-empty", a: MaterialAttributesTfs{}, b: MaterialAttributesTfs{}},
+		{name: "depen-empty", a: MaterialAttributesDependency{}, b: MaterialAttributesDependency{}},
+		{name: "pkg-empty", a: MaterialAttributesPackage{}, b: MaterialAttributesPackage{}},
+		{name: "plugin-empty", a: MaterialAttributesPlugin{}, b: MaterialAttributesPlugin{}},
 	} {
-		t.Run(strconv.Itoa(i), func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			ok, err := test.a.equal(test.b)
 			assert.True(t, ok)
 			assert.Nil(t, err)
