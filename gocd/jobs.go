@@ -2,6 +2,7 @@ package gocd
 
 import (
 	"context"
+	"encoding/json"
 )
 
 const (
@@ -68,6 +69,35 @@ type EnvironmentVariable struct {
 	Secure         bool   `json:"secure"`
 }
 
+type unencryptedEnvironmentVariable struct {
+	Name   string `json:"name"`
+	Value  string `json:"value"`
+	Secure bool   `json:"secure"`
+}
+
+type encryptedEnvironmentVariable struct {
+	Name           string `json:"name"`
+	EncryptedValue string `json:"encrypted_value"`
+	Secure         bool   `json:"secure"`
+}
+
+// MarshalJSON is a custom JSON Marhsaller for EnvironmentVariables to handle empty values
+func (v *EnvironmentVariable) MarshalJSON() ([]byte, error) {
+	if v.EncryptedValue != "" {
+		return json.Marshal(&encryptedEnvironmentVariable{
+			Name:           v.Name,
+			Secure:         v.Secure,
+			EncryptedValue: v.EncryptedValue,
+		})
+	}
+
+	return json.Marshal(&unencryptedEnvironmentVariable{
+		Name:   v.Name,
+		Secure: v.Secure,
+		Value:  v.Value,
+	})
+}
+
 // PluginConfigurationKVPair describes a key/value pair of plugin configurations.
 type PluginConfigurationKVPair struct {
 	Key   string `json:"key"`
@@ -97,6 +127,7 @@ type TaskAttributes struct {
 	Destination         string                      `json:"destination,omitempty"`
 	PluginConfiguration *TaskPluginConfiguration    `json:"plugin_configuration,omitempty"`
 	Configuration       []PluginConfigurationKVPair `json:"configuration,omitempty"`
+	ArtifactOrigin      string                      `json:"artifact_origin,omitempty"`
 }
 
 // TaskPluginConfiguration is for specifying options for pluggable task
