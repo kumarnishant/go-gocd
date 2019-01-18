@@ -78,6 +78,17 @@ func (es *EnvironmentsService) Create(ctx context.Context, name string) (e *Envi
 	return
 }
 
+func (es *EnvironmentsService) CreateEnvironment(ctx context.Context, environment *Environment) (e *Environment, resp *APIResponse, err error) {
+	_, resp, err = es.client.postAction(ctx, &APIClientRequest{
+		Path:         "admin/environments/",
+		RequestBody:  environment,
+		ResponseBody: &e,
+		APIVersion:   apiV2,
+	})
+
+	return
+}
+
 // Get a single environment by name
 func (es *EnvironmentsService) Get(ctx context.Context, name string) (e *Environment, resp *APIResponse, err error) {
 	e = &Environment{}
