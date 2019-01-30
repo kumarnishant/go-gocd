@@ -37,3 +37,15 @@ func (pgs *PipelineGroupsService) List(ctx context.Context, name string) (*Pipel
 
 	return &filtered, resp, err
 }
+
+func (pgs *PipelineGroupsService) Create(ctx context.Context, name string) (*PipelineGroup, *APIResponse, error) {
+	pg := &PipelineGroup{Name: name}
+
+	_, resp, err := pgs.client.postAction(ctx, &APIClientRequest{
+		Path:         "config/pipeline_groups",
+		ResponseType: responseTypeJSON,
+		ResponseBody: pg,
+	})
+
+	return pg, resp, err
+}
