@@ -39,11 +39,11 @@ func (pgs *PipelineGroupsService) List(ctx context.Context, name string) (*Pipel
 }
 
 func (pgs *PipelineGroupsService) Create(ctx context.Context, name string) (*PipelineGroup, *APIResponse, error) {
-	pg := &PipelineGroup{Name: name}
-
+	pg := &PipelineGroup{}
 	_, resp, err := pgs.client.postAction(ctx, &APIClientRequest{
 		Path:         "config/pipeline_groups",
 		ResponseType: responseTypeJSON,
+		RequestBody:  PipelineGroup{Name: name},
 		ResponseBody: pg,
 	})
 
