@@ -45,6 +45,7 @@ func (pgs *PipelineGroupsService) Create(ctx context.Context, name string) (*Pip
 		ResponseType: responseTypeJSON,
 		RequestBody:  PipelineGroup{Name: name},
 		ResponseBody: pg,
+		APIVersion:   apiV1,
 	})
 
 	return pg, resp, err
