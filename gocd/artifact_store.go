@@ -10,7 +10,8 @@ type Property struct {
 type ArtifactStore struct {
 	Links      *HALLinks   `json:"_links,omitempty"`
 	PluginId   string      `json:"plugin_id"`
-	properties []*Property `json:"properties"`
+	Properties []*Property `json:"properties"`
+	ID         string      `json:"id"`
 }
 
 type ArtifactStoreService service
