@@ -80,24 +80,24 @@ type Client struct {
 
 	Log *logrus.Logger
 
-	Agents            *AgentsService
-	PipelineGroups    *PipelineGroupsService
-	Stages            *StagesService
-	Jobs              *JobsService
-	PipelineTemplates *PipelineTemplatesService
-	Pipelines         *PipelinesService
-	PipelineConfigs   *PipelineConfigsService
-	Configuration     *ConfigurationService
-	ConfigRepos       *ConfigRepoService
-	Encryption        *EncryptionService
-	Plugins           *PluginsService
-	Environments      *EnvironmentsService
-	Properties        *PropertiesService
-	Roles             *RoleService
-	ServerVersion     *ServerVersionService
-
-	common service
-	cookie string
+	Agents               *AgentsService
+	PipelineGroups       *PipelineGroupsService
+	Stages               *StagesService
+	Jobs                 *JobsService
+	PipelineTemplates    *PipelineTemplatesService
+	Pipelines            *PipelinesService
+	PipelineConfigs      *PipelineConfigsService
+	Configuration        *ConfigurationService
+	ConfigRepos          *ConfigRepoService
+	Encryption           *EncryptionService
+	Plugins              *PluginsService
+	Environments         *EnvironmentsService
+	Properties           *PropertiesService
+	Roles                *RoleService
+	ServerVersion        *ServerVersionService
+	ArtifactStoreService *ArtifactStoreService
+	common               service
+	cookie               string
 }
 
 // ClientParameters describe how the client interacts with the GoCD Server
@@ -207,6 +207,7 @@ func attachServices(c *Client) {
 	c.Properties = (*PropertiesService)(&c.common)
 	c.Roles = (*RoleService)(&c.common)
 	c.ServerVersion = (*ServerVersionService)(&c.common)
+	c.ArtifactStoreService = (*ArtifactStoreService)(&c.common)
 }
 
 // codebeat:enable[ABC]
