@@ -46,9 +46,12 @@ type Job struct {
 
 // Artifact describes the result of a job
 type Artifact struct {
-	Type        string `json:"type"`
-	Source      string `json:"source"`
-	Destination string `json:"destination"`
+	Type          string                       `json:"type,omitempty"`
+	Source        string                       `json:"source,omitempty"`
+	Destination   string                       `json:"destination,omitempty"`
+	ArtifactId    string                       `json:"artifact_id,omitempty"`
+	StoreId       string                       `json:"store_id,omitempty"`
+	Configuration []*PluginConfigurationKVPair `json:"configuration,omitempty"`
 }
 
 // Tab description in a gocd job
