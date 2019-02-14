@@ -19,7 +19,7 @@ type ArtifactStoreService service
 func (crs *ArtifactStoreService) Create(ctx context.Context, store *ArtifactStore) (out *ArtifactStore, resp *APIResponse, err error) {
 	out = &ArtifactStore{}
 	_, resp, err = crs.client.postAction(ctx, &APIClientRequest{
-		Path:         "admin/config_repos",
+		Path:         "admin/artifact_stores",
 		RequestBody:  store,
 		ResponseBody: out,
 		APIVersion:   apiV1,
