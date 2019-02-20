@@ -8,15 +8,15 @@ import (
 type ScmService service
 
 type ScmConfig struct {
-	Links          *HALLinks     `json:"_links"`
-	Id             string        `json:"id,omitempty"`
-	Name           string        `json:"name,omitempty"`
-	AutoUpdate     bool          `json:"auto_update,omitempty"`
-	PluginMetadata PluginMetaDta `json:"plugin_metadata,omitempty"`
-	configuration  []*Property   `json:"configuration,omitempty"`
+	Links          *HALLinks      `json:"_links,omitempty"`
+	Id             string         `json:"id,omitempty"`
+	Name           string         `json:"name,omitempty"`
+	AutoUpdate     bool           `json:"auto_update,omitempty"`
+	PluginMetadata PluginMetadata `json:"plugin_metadata,omitempty"`
+	Configuration  []*Property    `json:"configuration,omitempty"`
 }
 
-type PluginMetaDta struct {
+type PluginMetadata struct {
 	Id      string `json:"id,omitempty"`
 	Version string `json:"version,omitempty"`
 }
@@ -49,12 +49,12 @@ func (ps *ScmService) Get(ctx context.Context, name string) (*ScmConfig, *APIRes
 	return p, resp, err
 }
 
-func (ps *ScmService) Create(ctx context.Context,  scm *ScmConfig) (scmRes *ScmConfig, resp *APIResponse, err error) {
+func (ps *ScmService) Create(ctx context.Context, scm *ScmConfig) (scmRes *ScmConfig, resp *APIResponse, err error) {
 	scmRes = &ScmConfig{}
 	_, resp, err = ps.client.postAction(ctx, &APIClientRequest{
-		Path:       "admin/scms",
-		APIVersion: apiV1,
-		RequestBody: scm,
+		Path:         "admin/scms",
+		APIVersion:   apiV1,
+		RequestBody:  scm,
 		ResponseBody: scmRes,
 	})
 	return
