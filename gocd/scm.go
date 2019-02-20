@@ -1,6 +1,9 @@
 package gocd
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 type ScmService service
 
@@ -34,4 +37,25 @@ func (ps *ScmService) List(ctx context.Context) (*ScmListResp, *APIResponse, err
 	})
 
 	return &pr, resp, err
+}
+
+func (ps *ScmService) Get(ctx context.Context, name string) (*ScmConfig, *APIResponse, error) {
+	p := &ScmConfig{}
+	_, resp, err := ps.client.getAction(ctx, &APIClientRequest{
+		Path:         fmt.Sprintf("admin/scms/%s", name),
+		ResponseBody: p,
+		APIVersion:   apiV1,
+	})
+	return p, resp, err
+}
+
+func (ps *ScmService) Create(ctx context.Context,  scm *ScmConfig) (scmRes *ScmConfig, resp *APIResponse, err error) {
+	scmRes = &ScmConfig{}
+	_, resp, err = ps.client.postAction(ctx, &APIClientRequest{
+		Path:       "admin/scms",
+		APIVersion: apiV1,
+		RequestBody: scm,
+		ResponseBody: scmRes,
+	})
+	return
 }
