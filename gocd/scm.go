@@ -26,15 +26,11 @@ type ScmListResp struct {
 }
 
 func (ps *ScmService) List(ctx context.Context) (*ScmListResp, *APIResponse, error) {
-	apiVersion, err := ps.client.getAPIVersion(ctx, "admin/scms")
-	if err != nil {
-		return nil, nil, err
-	}
 	pr := ScmListResp{}
 	_, resp, err := ps.client.getAction(ctx, &APIClientRequest{
 		Path:         "admin/scms",
 		ResponseBody: &pr,
-		APIVersion:   apiVersion,
+		APIVersion:   apiV1,
 	})
 
 	return &pr, resp, err
