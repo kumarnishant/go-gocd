@@ -114,7 +114,7 @@ type MaterialAttributesPackage struct {
 type MaterialAttributesPlugin struct {
 	Ref string `json:"ref"`
 
-	Destination  string          `json:"destination"`
+	Destination  string          `json:"destination,omitempty"`
 	Filter       *MaterialFilter `json:"filter,omitempty"`
-	InvertFilter bool            `json:"invert_filter"`
+	InvertFilter bool            `json:"invert_filter,omitempty"`
 }
