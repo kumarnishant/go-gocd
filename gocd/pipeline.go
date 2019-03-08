@@ -227,3 +227,8 @@ func choosePipelineConfirmHeader(request *APIClientRequest, apiVersion string) {
 	}
 
 }
+
+// Unpause allows a pipeline to handle new build events
+func (pgs *PipelinesService) Schedule(ctx context.Context, name string) (bool, *APIResponse, error) {
+	return pgs.pipelineAction(ctx, name, "schedule")
+}
