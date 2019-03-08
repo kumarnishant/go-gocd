@@ -33,6 +33,7 @@ type Pipeline struct {
 	TrackingTool          *TrackingTool          `json:"tracking_tool"`                     // TrackingTool is available for the pipeline config API since v1 (GoCD >= 15.3.0).
 	Timer                 *Timer                 `json:"timer"`                             // Timer is available for the pipeline config API since v1 (GoCD >= 15.3.0).
 	Version               string                 `json:"version,omitempty"`                 // Version corresponds to the ETag header used when updating a pipeline config
+	UpdateMaterialsBeforeScheduling bool            `json:"update_materials_before_scheduling"`
 }
 
 // codebeat:enable[TOO_MANY_IVARS]
