@@ -77,6 +77,7 @@ type Material struct {
 	Fingerprint string            `json:"fingerprint,omitempty"`
 	Description string            `json:"description,omitempty"`
 	Attributes  MaterialAttribute `json:"attributes"`
+	Revision string            `json:"revision,omitempty"`
 }
 
 // MaterialFilter describes which globs to ignore
@@ -229,7 +230,40 @@ func choosePipelineConfirmHeader(request *APIClientRequest, apiVersion string) {
 
 }
 
-// Unpause allows a pipeline to handle new build events
+/**
+@author : vikram
+it will trigger the pipeline only, without any option
+ */
 func (pgs *PipelinesService) Schedule(ctx context.Context, name string) (bool, *APIResponse, error) {
 	return pgs.pipelineAction(ctx, name, "schedule")
+}
+
+/**
+@author : vikram
+it will trigger the pipeline, with override fields
+ */
+func (pgs *PipelinesService) PipelineSchedule(ctx context.Context, name string, scheduleRequest *PipelineScheduleRequest) (bool, *APIResponse, error) {
+
+	apiVersion, err := pgs.client.getAPIVersion(ctx, fmt.Sprintf("pipelines/:pipeline_name/%s", "schedule"))
+	if err != nil {
+		return false, nil, err
+	}
+
+	request := &APIClientRequest{
+		Path:       fmt.Sprintf("pipelines/%s/%s", name, "schedule"),
+		APIVersion: apiVersion,
+		RequestBody: scheduleRequest,
+		ResponseBody: nil,
+	}
+	choosePipelineConfirmHeader(request, apiVersion)
+
+	_, resp, err := pgs.client.postAction(ctx, request)
+
+	return resp.HTTP.StatusCode == 200, resp, err
+}
+
+type PipelineScheduleRequest struct {
+	EnvironmentVariable                []EnvironmentVariable               `json:"environment_variables,omitempty"`
+	Materials             []Material               `json:"materials,omitempty"`
+	UpdateMaterialsBeforeScheduling bool            `json:"update_materials_before_scheduling"`
 }
