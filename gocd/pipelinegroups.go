@@ -50,3 +50,32 @@ func (pgs *PipelineGroupsService) Create(ctx context.Context, name string) (*Pip
 
 	return pg, resp, err
 }
+
+/**
+@author: vikram
+it will fetch materials of the pipeline from any pipeline group
+ */
+func (pgs *PipelineGroupsService) ListPipelineMaterial(ctx context.Context, name string, pipelineName string) ([] Material, *APIResponse, error) {
+
+	pg := []*PipelineGroup{}
+	_, resp, err := pgs.client.getAction(ctx, &APIClientRequest{
+		Path:         "config/pipeline_groups",
+		ResponseType: responseTypeJSON,
+		ResponseBody: &pg,
+	})
+
+	materials := [] Material{}
+	if name != "" && err == nil {
+		for _, pipelineGroup := range pg {
+			if pipelineGroup.Name == name {
+				for _,obj := range pipelineGroup.Pipelines {
+					if obj.Name == pipelineName {
+						materials = append(obj.Materials)
+					}
+				}
+			}
+		}
+	}
+
+	return materials, resp, err
+}
