@@ -230,6 +230,12 @@ func choosePipelineConfirmHeader(request *APIClientRequest, apiVersion string) {
 
 }
 
+type PipelineScheduleRequest struct {
+	EnvironmentVariable                []*EnvironmentVariable               `json:"environment_variables,omitempty"`
+	Materials             []Material               `json:"materials,omitempty"`
+	UpdateMaterialsBeforeScheduling bool            `json:"update_materials_before_scheduling"`
+}
+
 /**
 @author : vikram
 it will trigger the pipeline only, without any option
@@ -262,8 +268,15 @@ func (pgs *PipelinesService) PipelineSchedule(ctx context.Context, name string, 
 	return resp.HTTP.StatusCode == 200, resp, err
 }
 
-type PipelineScheduleRequest struct {
-	EnvironmentVariable                []EnvironmentVariable               `json:"environment_variables,omitempty"`
-	Materials             []Material               `json:"materials,omitempty"`
-	UpdateMaterialsBeforeScheduling bool            `json:"update_materials_before_scheduling"`
+
+// Get a material by pipeline instance
+func (pgs *PipelinesService) FetchMaterialByInstanceCount(ctx context.Context, name string, instanceCount string) (resp *APIResponse, err error) {
+
+	_, resp, err = pgs.client.getAction(ctx, &APIClientRequest{
+		Path:         "pipelines/"+ name + "/instance/" + instanceCount,
+		ResponseBody: resp,
+		APIVersion:   apiV1,
+	})
+
+	return
 }
