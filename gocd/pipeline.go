@@ -1,8 +1,10 @@
 package gocd
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"mime/multipart"
 )
 
 // PipelinesService describes the HAL _link resource for the api response object for a pipelineconfig
@@ -270,13 +272,89 @@ func (pgs *PipelinesService) PipelineSchedule(ctx context.Context, name string, 
 
 
 // Get a material by pipeline instance
-func (pgs *PipelinesService) FetchMaterialByInstanceCount(ctx context.Context, name string, instanceCount string) (resp *APIResponse, err error) {
+func (pgs *PipelinesService) FetchMaterialByInstanceCount(ctx context.Context, name string, instanceCount string) (materials *PipelineScheduleRequest, resp *APIResponse, err error) {
+	materials = &PipelineScheduleRequest{}
 
 	_, resp, err = pgs.client.getAction(ctx, &APIClientRequest{
 		Path:         "pipelines/"+ name + "/instance/" + instanceCount,
-		ResponseBody: resp,
+		ResponseBody: &materials,
 		APIVersion:   apiV1,
 	})
 
 	return
+}
+
+type Artifacts struct {
+	Name     	string   `json:"name,omitempty"`
+	Url   string      `json:"url"`
+	Type string `json:"type"`
+	Files        []Artifacts      `json:"files"`
+}
+
+type ArtifactResponse struct {
+	Artifacts     	[]Artifacts   `json:"artifacts,omitempty"`
+}
+
+// Get all Artifact (Files or Directory) of pipeline job
+func (pgs *PipelinesService) GetArtifactAll(ctx context.Context, pname string,pc string,sname string, sc string, jname string, path string) (artifacts []Artifacts, resp *APIResponse, err error) {
+	artifacts = []Artifacts{}
+	//artifactResponse := ArtifactResponse{}
+	_, resp, err = pgs.client.getAction(ctx, &APIClientRequest{
+		Path:         "/files/"+ pname + "/" + pc +"/" + sname +"/" + sc + "/" + jname + ".json",
+		ResponseBody: &artifacts,
+		APIVersion:   apiV1,
+	})
+	//artifactResponse.Artifacts = append(artifacts)
+	return artifacts, resp, err
+}
+// Get one Artifact (Files or Directory) of pipeline job by exact path
+func (pgs *PipelinesService) GetArtifact(ctx context.Context, pname string,pc string,sname string, sc string, jname string, path string) (resp *APIResponse, err error) {
+	var contentResponse string
+	_, resp, err = pgs.client.getAction(ctx, &APIClientRequest{
+		Path:         "/files/"+ pname + "/" + pc +"/" + sname +"/" + sc + "/" + jname + "/"+ path,
+		ResponseBody: contentResponse,
+		ResponseType : responseTypeText,
+		APIVersion:   apiV0,
+	})
+
+	return
+}
+
+
+// create artifact for pipeline
+func (pgs *PipelinesService) PostArtifact(ctx context.Context, pname string,pc string,sname string, sc string, jname string, path string) (resp *APIResponse, err error) {
+	//TODO - not completed
+	//fmt.Println(">>>>>>1")
+	buf := new(bytes.Buffer)
+	writer := multipart.NewWriter(buf)
+	writer.CreateFormFile("file","filename.dat")
+	//fmt.Println(">>>>>>2")
+	request := &APIClientRequest{
+		Path:         "/files/"+ pname + "/" + pc +"/" + sname +"/" + sc + "/" + jname + "/" + path,
+		APIVersion: apiV0,
+		RequestBody: buf,
+		ResponseBody: nil,
+
+	}
+	//fmt.Println(">>>>>>3")
+	choosePipelineConfirmHeader(request, apiV0)
+	request.Headers = map[string]string{"Confirm": "true"}
+	_, resp, err = pgs.client.postAction(ctx, request)
+	//fmt.Println(">>>>>>4")
+	return resp, err
+}
+
+// append artifact for pipeline
+func (pgs *PipelinesService) PutArtifact(ctx context.Context, pname string,pc string,sname string, sc string, jname string, path string) (resp *APIResponse, err error) {
+	//TODO - not completed yet
+	request := &APIClientRequest{
+		Path:         "/files/"+ pname + "/" + pc +"/" + sname +"/" + sc + "/" + jname + "/" + path,
+		APIVersion: apiV0,
+		RequestBody: nil,
+		ResponseBody: nil,
+	}
+	choosePipelineConfirmHeader(request, apiV0)
+	_, resp, err = pgs.client.putAction(ctx, request)
+
+	return resp, err
 }
