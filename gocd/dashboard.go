@@ -43,7 +43,7 @@ type EmbeddedPipeline struct {
 	CanUnlock           bool              `json:"can_unlock"`
 	CanPause            bool              `json:"can_pause"`
 	FromConfigRepo      bool              `json:"from_config_repo"`
-	EmbeddedInstances   EmbeddedInstances `json:"_embedded"`
+	EmbeddedInstances   *EmbeddedInstances `json:"_embedded"`
 }
 
 type EmbeddedInstances struct {
@@ -56,7 +56,7 @@ type EmbeddedInstance struct {
 	Counter        int            `json:"counter"`
 	TriggeredBy    string         `json:"triggered_by"`
 	ScheduledAt    string         `json:"scheduled_at"`
-	EmbeddedStages EmbeddedStages `json:"_embedded"`
+	EmbeddedStages *EmbeddedStages `json:"_embedded"`
 }
 
 type EmbeddedStages struct {
