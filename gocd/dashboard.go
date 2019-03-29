@@ -78,11 +78,13 @@ type PauseInfo struct {
 	PauseReason string `json:"pause_reason"`
 }
 
-func (ds *DashboardService) Get(ctx context.Context) (*Dashboard, *APIResponse, error) {
+func (ds *DashboardService) Get(ctx context.Context, viewName string) (*Dashboard, *APIResponse, error) {
 	var dashboard Dashboard
-
+	if len(viewName) == 0 {
+		viewName = "Default"
+	}
 	_, resp, err := ds.client.getAction(ctx, &APIClientRequest{
-		Path:         "dashboard?viewName=Default",
+		Path:         "dashboard?viewName="+viewName,
 		APIVersion:   apiV3,
 		ResponseBody: &dashboard,
 	})

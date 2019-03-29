@@ -41,7 +41,7 @@ func TestDashboardService_Get(t *testing.T) {
 			//	client: tt.fields.client,
 			//	log:    tt.fields.log,
 			//}
-			tt.fields.client.Dashboard.Get(tt.args.ctx)
+			tt.fields.client.Dashboard.Get(tt.args.ctx, "")
 		})
 	}
 }
