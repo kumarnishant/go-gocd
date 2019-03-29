@@ -99,6 +99,7 @@ type Client struct {
 	common               service
 	cookie               string
 	Scms                 *ScmService
+	Dashboard            *DashboardService
 }
 
 // ClientParameters describe how the client interacts with the GoCD Server
@@ -210,6 +211,7 @@ func attachServices(c *Client) {
 	c.ServerVersion = (*ServerVersionService)(&c.common)
 	c.ArtifactStoreService = (*ArtifactStoreService)(&c.common)
 	c.Scms = (*ScmService)(&c.common)
+	c.Dashboard = (*DashboardService)(&c.common)
 }
 
 // codebeat:enable[ABC]
