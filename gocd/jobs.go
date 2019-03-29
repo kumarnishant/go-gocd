@@ -135,6 +135,7 @@ type TaskAttributes struct {
 	PluginConfiguration *TaskPluginConfiguration    `json:"plugin_configuration,omitempty"`
 	Configuration       []PluginConfigurationKVPair `json:"configuration,omitempty"`
 	ArtifactOrigin      string                      `json:"artifact_origin,omitempty"`
+	ArtifactId          string                      `json:"artifact_id,omitempty"`
 }
 
 // codebeat:enable[TOO_MANY_IVARS]
