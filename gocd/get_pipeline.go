@@ -7,6 +7,17 @@ import (
 
 type GetPipelineService service
 
+type PipelineHistoryResponse struct {
+	Pagination Pagination	`json:"pagination"`
+	Pipelines []*PipelineInstanceResponse `json:"pipelines"`
+}
+
+type Pagination struct {
+	Offset int `json:"offset"`
+	Total int `json:"total"`
+	PageSize int `json:"page_size"`
+}
+
 // PipelineInstance describes a single pipeline run
 // codebeat:disable[TOO_MANY_IVARS]
 type PipelineInstanceResponse struct {
@@ -32,7 +43,7 @@ type StageResponse struct {
 	CanRun            string `json:"can_run"`
 	Counter           string `json:"counter"`
 	Scheduled         bool   `json:"scheduled"`
-	Id                int    `json:"id"`
+	ID                int    `json:"id"`
 	OperatePermission bool   `json:"operate_permission"`
 	RerunOfCounter    int    `json:"rerun_of_counter"`
 	CancelledBy       string `json:"cancelled_by"`
@@ -51,6 +62,16 @@ func (ps *GetPipelineService) Get(ctx context.Context, pipelineName string, inst
 
 	_, resp, err := ps.client.getAction(ctx, &APIClientRequest{
 		Path:         "pipelines/" + pipelineName + "/instance/" + strconv.Itoa(instanceId),
+		ResponseBody: pipeline,
+	})
+	return pipeline, resp, err
+}
+
+func (ps *GetPipelineService) GetHistory(ctx context.Context, pipelineName string, offset int) (*PipelineHistoryResponse, *APIResponse, error) {
+	pipeline := &PipelineHistoryResponse{}
+
+	_, resp, err := ps.client.getAction(ctx, &APIClientRequest{
+		Path:         "pipelines/" + pipelineName + "/history/" + strconv.Itoa(offset),
 		ResponseBody: pipeline,
 	})
 	return pipeline, resp, err
