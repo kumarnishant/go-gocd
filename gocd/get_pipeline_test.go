@@ -2,17 +2,20 @@ package gocd
 
 import (
 	"context"
-	"github.com/sirupsen/logrus"
 	"testing"
+
+	"github.com/sirupsen/logrus"
 )
 
-func TestDashboardService_Get(t *testing.T) {
+func TestGetPipelineService_Get(t *testing.T) {
 	type fields struct {
 		client *Client
 		log    *logrus.Logger
 	}
 	type args struct {
-		ctx context.Context
+		ctx          context.Context
+		pipelineName string
+		instanceId   int
 	}
 	tests := []struct {
 		name   string
@@ -20,7 +23,7 @@ func TestDashboardService_Get(t *testing.T) {
 		args   args
 	}{
 		{
-			name: "Dashboard test",
+			name: "Pipeline test",
 			fields: fields{
 				client: (&Configuration{
 					Server:       "http://aa2e0b202494a11e9aaa80270a75f15a-574269451.us-east-2.elb.amazonaws.com/go/",
@@ -29,17 +32,20 @@ func TestDashboardService_Get(t *testing.T) {
 				log: logrus.StandardLogger(),
 			},
 			args: args{
-				ctx: context.Background(),
+				ctx:          context.Background(),
+				pipelineName: "test-da-CD-4",
+				instanceId:   12,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			//ds := &DashboardService{
-			//	client: tt.fields.client,
-			//	log:    tt.fields.log,
-			//}
-			tt.fields.client.Dashboard.Get(tt.args.ctx, "")
+			ps := &GetPipelineService{
+				client: tt.fields.client,
+				log:    tt.fields.log,
+			}
+			ps.Get(tt.args.ctx, tt.args.pipelineName, tt.args.instanceId)
+
 		})
 	}
 }
