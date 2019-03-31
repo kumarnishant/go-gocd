@@ -40,7 +40,7 @@ type StageResponse struct {
 	Result            string `json:"result"`
 	ApprovedBy        string `json:"approved_by"`
 	ApprovalType      string `json:"approval_type"`
-	CanRun            string `json:"can_run"`
+	CanRun            bool `json:"can_run"`
 	Counter           string `json:"counter"`
 	Scheduled         bool   `json:"scheduled"`
 	ID                int    `json:"id"`

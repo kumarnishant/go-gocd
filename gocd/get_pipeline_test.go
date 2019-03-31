@@ -76,7 +76,7 @@ func TestGetPipelineService_GetHistory(t *testing.T) {
 			},
 			args: args{
 				ctx:          context.Background(),
-				pipelineName: "test-da-CD-4",
+				pipelineName: "test-ds-CD-5",
 				offset:   0,
 			},
 		},
