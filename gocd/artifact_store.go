@@ -65,3 +65,10 @@ func (crs *ArtifactStoreService) GetAll(ctx context.Context) (stores []ArtifactS
 
 	return
 }
+
+func (crs *ArtifactStoreService) Delete(ctx context.Context, storeId string) (message string, resp *APIResponse, err error) {
+	path := "admin/artifact_stores/" + storeId
+	message, resp, err = crs.client.deleteAction(ctx, path, apiV1)
+
+	return
+}
